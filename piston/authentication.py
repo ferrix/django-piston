@@ -284,7 +284,7 @@ class OAuthAuthentication(object):
         for k, v in self.builder(realm=realm).iteritems():
             response[k] = v
 
-        tmpl = loader.render_to_string('oauth/challenge.html',
+        tmpl = loader.render_to_string('piston/challenge.html',
             { 'MEDIA_URL': settings.MEDIA_URL })
 
         response.content = tmpl
