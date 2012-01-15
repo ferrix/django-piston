@@ -130,6 +130,11 @@ class Resource(object):
         else:
             handler = actor
 
+        # Clean up the request object a bit, since we might
+        # very well have `oauth_`-headers in there, and we
+        # don't want to pass these along to the handler.
+        request = self.cleanup_request(request)
+
         # Translate nested datastructs into `request.data` here.
         if rm in ('POST', 'PUT'):
             try:
@@ -153,11 +158,6 @@ class Resource(object):
         em_format = self.determine_emitter(request, *args, **kwargs)
 
         kwargs.pop('emitter_format', None)
-
-        # Clean up the request object a bit, since we might
-        # very well have `oauth_`-headers in there, and we
-        # don't want to pass these along to the handler.
-        request = self.cleanup_request(request)
 
         try:
             result = meth(request, *args, **kwargs)
